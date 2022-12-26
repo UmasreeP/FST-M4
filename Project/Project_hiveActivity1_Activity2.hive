@@ -1,0 +1,35 @@
+---Drop the tables
+DROP TABLE episodeIV;
+DROP TABLE episodeV;
+DROP TABLE episodeVI;
+
+--Make the tables for each input file
+-- EpisodeIV table
+CREATE TABLE episodeIV (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+TBLPROPERTIES ("skip.header.line.count"="2");
+-- EpisodeV table
+CREATE TABLE episodeV (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+TBLPROPERTIES ("skip.header.line.count"="2");
+-- EpisodeVI table
+CREATE TABLE episodeVI (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+TBLPROPERTIES ("skip.header.line.count"="2");
+
+--LOAD data into each table
+LOAD DATA LOCAL INPATH '/root/inputs/episodeIV_dialouges.txt' INTO TABLE episodeIV;
+LOAD DATA LOCAL INPATH '/root/inputs/episodeIV_dialouges.txt' INTO TABLE episodeV;
+LOAD DATA LOCAL INPATH '/root/inputs/episodeIV_dialouges.txt' INTO TABLE episodeVI;
+
+--Activity 1
+INSERT OVERWRITE DIRECTORY '/user/umasree/output'
+SELECT name, COUNT(name) AS no_of_lines FROM episodeIV GROUP BY name ORDER BY no_of_lines DESC;
+INSERT OVERWRITE DIRECTORY '/user/umasree/output'
+SELECT name, COUNT(name) AS no_of_lines FROM episodeV GROUP BY name ORDER BY no_of_lines DESC;
+INSERT OVERWRITE DIRECTORY '/user/umasree/output'
+SELECT name, COUNT(name) AS no_of_lines FROM episodeVI GROUP BY name ORDER BY no_of_lines DESC;
+
+--Activity2
+ SELECT COUNT(*) FROM episodeIV where INSTR(line, 'Luke')>=1;
+
